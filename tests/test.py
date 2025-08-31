@@ -1,4 +1,4 @@
-import curtubemodule
+from Curtube import curtubemodule
 issuccess = curtubemodule.signin('CurtisPlaysYT', 'abc123')
 if issuccess == 1:
     print('successfully created account')
