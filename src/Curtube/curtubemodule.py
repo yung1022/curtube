@@ -55,7 +55,7 @@ def getalluser():
     import sqlite3
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users") # Replace 'your_table_name'
+    cursor.execute("SELECT password FROM users") # Replace 'your_table_name'
     user_data = cursor.fetchall()
     countid = 1
     for row in user_data:
