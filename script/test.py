@@ -7,3 +7,4 @@ if issuccess == 1:
 curtubemodule.login('ASSHELL', 'ASS')
 curtubemodule.getalluser()
 curtubemodule.upload('video', 'HELLO')
+curtubemodule.getallvid()

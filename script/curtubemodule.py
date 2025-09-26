@@ -91,4 +91,11 @@ def upload(type, title):
     cursor.execute("INSERT INTO vid (vidname, vidviews, vidlikeratio, vidwatchrate, uploadtime, laststatsupdatetime, vidtype, viduploader) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (title, 0, random.randrange(30, 100), random.randrange(40, 120), time.time(), time.time(), type, Useridlogedin))
     conn.commit()
     print('Upload Success')
-    return 1
+    return 
+def getallvid():
+    import sqlite3
+    conn = sqlite3.connect('user_data.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM vid")
+    vid_data = cursor.fetchall()
+    print(vid_data)
