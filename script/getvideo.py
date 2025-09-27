@@ -1,0 +1,1 @@
+pyscript.write("output", curtubemodule.getallvid(), True")

@@ -92,10 +92,23 @@ def upload(type, title):
     conn.commit()
     print('Upload Success')
     return 
-def getallvid():
+def getallvid(event):
     import sqlite3
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS vid (
+        vidid INTEGER PRIMARY KEY AUTOINCREMENT, 
+        vidname TEXT NOT NULL, vidviews INTEGER NOT NULL, 
+        vidlikeratio INTEGER NOT NULL, 
+        vidwatchrate INTEGER NOT NULL, 
+        uploadtime INTEGER NOT NULL, 
+        laststatsupdatetime INTEGER NOT NULL, 
+        vidtype TEXT NOT NULL, 
+        viduploader TEXT NOT NULL
+        )
+    ''')
     cursor.execute("SELECT * FROM vid")
     vid_data = cursor.fetchall()
     print(vid_data)
+    return vid_data

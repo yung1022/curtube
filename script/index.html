@@ -1,34 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <link rel="stylesheet" href="fonts.css">
-    <title>CurTube V1.1</title>
-</head>
-<body>
-    <div id="outputContainer">
-        <!-- Content will be inserted here by JavaScript -->
-    </div>
-
-    <script>
-        // Get the div element by its ID
-        const container = document.getElementById("outputContainer");
-
-        // Create some HTML content as a string
-        const HTML = `
-            <h2>CurTube Test Site</h2>
-            <p>Test</p>
-            <ul>
-                <li>Test</li>
-                <li>Test</li>
-            </ul>
-        `;
-
-        // Set the innerHTML of the container to the new content
-        container.innerHTML = HTML;
-    </script>
-</body>
+<html>
+  <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>CurTube v1.1</title>
+      <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+      <link rel="stylesheet" href="fonts.css">
+      <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  </head>
+  <body>
+    <h1>Welcome to CurTube</h1>
+    <p>All video in here:</p>
+    <script type="py" src="curtubemodule.py" config="./pyscript.json"></script>
+    <py-script src="curtubemodule.py"></py-script>
+    <py-script src="getvideo.py"></py-script>
+  </body>
 </html>
