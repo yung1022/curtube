@@ -11,8 +11,9 @@
   <body>
     <h1>Welcome to CurTube</h1>
     <p>All video in here:</p>
-    <script type="py" src="curtubemodule.py" config="./pyscript.json"></script>
-    <py-script src="curtubemodule.py"></py-script>
-    <py-script src="getvideo.py"></py-script>
+    <script type="py" src="./modules/curtubemodule.py" config="./pyscript.json"></script>
+    <py-script src="./modules/curtubemodule.py"></py-script>
+    <button py-click="getallvid">Refresh</button>
+    <div id="vidout"></div>
   </body>
 </html>

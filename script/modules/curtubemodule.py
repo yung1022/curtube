@@ -1,5 +1,6 @@
 import time
 import random
+from pyscript import document
 print('CurTube v1.1')
 def signin(Username, Password):
     issuccess = 0
@@ -111,4 +112,6 @@ def getallvid(event):
     cursor.execute("SELECT * FROM vid")
     vid_data = cursor.fetchall()
     print(vid_data)
-    return vid_data
+    output_div = document.querySelector("#vidout")
+    output_div.innerText = vid_data
+
