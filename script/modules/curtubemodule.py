@@ -41,10 +41,12 @@ def data():
     user_data = cursor.fetchone() # Fetch a single row
     if user_data:
         print(f"User found: {user_data}")
-def login(Username, Password):
+def login(event):
     import sqlite3
     conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
     cursor = conn.cursor()
+    Username = document.querySelector("#loginusername")
+    Password = document.querySelector("#loginpassword")
     cursor.execute("SELECT * FROM users WHERE username = ?", (Username,))
     user_data = cursor.fetchone() # Fetch a single row
     if user_data:
@@ -71,7 +73,7 @@ def getalluser():
     for row in user_data:
         print('ID:', countid, ',', row) # Or perform other operations with each row
         countid += 1
-def upload(type, title):
+def upload(event):
     import sqlite3
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
@@ -89,7 +91,8 @@ def upload(type, title):
         )
     ''')
     print('Video Uploading...')
-    cursor.execute("INSERT INTO vid (vidname, vidviews, vidlikeratio, vidwatchrate, uploadtime, laststatsupdatetime, vidtype, viduploader) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (title, 0, random.randrange(30, 100), random.randrange(40, 120), time.time(), time.time(), type, Useridlogedin))
+    input_text = document.querySelector("#vidtitle")
+    cursor.execute("INSERT INTO vid (vidname, vidviews, vidlikeratio, vidwatchrate, uploadtime, laststatsupdatetime, vidtype, viduploader) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (input_text, 0, random.randrange(30, 100), random.randrange(40, 120), time.time(), time.time(), "video", Useridlogedin))
     conn.commit()
     print('Upload Success')
     return 

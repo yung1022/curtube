@@ -14,6 +14,14 @@
     <script type="py" src="./modules/curtubemodule.py" config="./pyscript.json"></script>
     <py-script src="./modules/curtubemodule.py"></py-script>
     <button py-click="getallvid">Refresh</button>
+    <div></div>
+    <input type="text" id="loginusername" placeholder="Username" />
+    <div></div>
+    <input type="password" id="loginpassword" placeholder="Password" />
+    <button py-click="login">Login</button>
+    <div></div>
+    <input type="text" id="vidtitle" placeholder="Type title here..." />
+    <button py-click="upload">Upload Video</button>
     <div id="vidout"></div>
   </body>
 </html>
