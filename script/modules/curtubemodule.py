@@ -28,8 +28,7 @@ def signin(Username, Password):
         print(f"User already exists.")
         issuccess = 0
     else:
-        cursor.execute("INSERT INTO users (username, password_hash, vidcount, shortcount, subs, views, lastupdatetime) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                       (username, password_hash, 0, 0, 0, 0, time.time()))
+        cursor.execute("INSERT INTO users (username, password_hash, vidcount, shortcount, subs, views, lastupdatetime) VALUES (?, ?, ?, ?, ?, ?, ?)",(username, password_hash, 0, 0, 0, 0, time.time()))
         conn.commit()
         issuccess = 1
     return issuccess
@@ -74,6 +73,9 @@ def getalluser():
         print('ID:', countid, ',', row) # Or perform other operations with each row
         countid += 1
 def upload(event):
+    import random
+    import time
+    Useridlogedin = 1 # this is a test
     import sqlite3
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
@@ -103,7 +105,8 @@ def getallvid(event):
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS vid (
         vidid INTEGER PRIMARY KEY AUTOINCREMENT, 
-        vidname TEXT NOT NULL, vidviews INTEGER NOT NULL, 
+        vidname TEXT NOT NULL, 
+        vidviews INTEGER NOT NULL, 
         vidlikeratio INTEGER NOT NULL, 
         vidwatchrate INTEGER NOT NULL, 
         uploadtime INTEGER NOT NULL, 
