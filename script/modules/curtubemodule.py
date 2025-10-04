@@ -1,46 +1,76 @@
 import time
 import random
-from pyscript import document
+# from pyscript import document
 print('CurTube v1.1')
-def signin(Username, Password):
+def signin(event):
     issuccess = 0
-    import sqlite3
-    conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
-    cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        username TEXT NOT NULL UNIQUE,
-        password_hash TEXT NOT NULL,
-        vidcount INTEGER NOT NULL,
-        shortcount INTEGER NOT NULL,
-        subs INTEGER NOT NULL,
-        views INTEGER NOT NULL,
-        lastupdatetime INTEGER NOT NULL
-        )
-    ''')
-    conn.commit() # Save changes
-    username = Username
-    password_hash = Password # Store hashed passwords, not plain text!
-    cursor.execute("SELECT * FROM users WHERE username = ?", (Username,))
-    user_data = cursor.fetchone() # Fetch a single row
-    if user_data:
+    from pyscript import document
+    import pickle
+    Username = document.querySelector("#loginusername")
+    Password = document.querySelector("#loginpassword")
+    file_name = "user_data.pkl"
+    with open(file_name, "rb") as file:
+        # Use pickle.load() to read the list from the file
+        userdata = pickle.load(file)
+    # list format : [[userid(item 1 (or [0])), username, password, vidcount, shortcount, subs, views, lastupdatetime][...]...]
+    # -- PROGRAM TO MAKE USERNAME LIST --
+    usernamelist = []
+    print((len(userdata))/8)
+    for i in range(int((len(userdata)-7)/8)):
+        usernamelist.append(userdata[i*8-7])
+        print(usernamelist)
+    if Username in usernamelist:
         print(f"User already exists.")
         issuccess = 0
     else:
-        cursor.execute("INSERT INTO users (username, password_hash, vidcount, shortcount, subs, views, lastupdatetime) VALUES (?, ?, ?, ?, ?, ?, ?)",(username, password_hash, 0, 0, 0, 0, time.time()))
-        conn.commit()
+        print(userdata)
+        newuserid = int(userdata[len(userdata)-8]+1)
+        print(newuserid)
+        newuserdatalist = [newuserid, Username, Password, 0, 0, 0, 0, int(time.time())]
+        userdata.extend(newuserdatalist)
+        file_name = 'user_data.pkl'
+        with open(file_name, 'wb') as file:
+            pickle.dump(userdata, file)
         issuccess = 1
+    # OLD SCRIPT #
+    # import sqlite3
+    # conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
+    # cursor = conn.cursor()
+    # cursor.execute('''
+    # CREATE TABLE IF NOT EXISTS users (
+    #     id INTEGER PRIMARY KEY,
+    #     username TEXT NOT NULL UNIQUE,
+    #     password_hash TEXT NOT NULL,
+    #     vidcount INTEGER NOT NULL,
+    #     shortcount INTEGER NOT NULL,
+    #     subs INTEGER NOT NULL,
+    #     views INTEGER NOT NULL,
+    #     lastupdatetime INTEGER NOT NULL
+    #     )
+    # ''')
+    # conn.commit() # Save changes
+    # username = Username
+    # password_hash = Password # Store hashed passwords, not plain text!
+    # cursor.execute("SELECT * FROM users WHERE username = ?", (Username,))
+    # user_data = cursor.fetchone() # Fetch a single row
+    # if user_data:
+    #     print(f"User already exists.")
+    #     issuccess = 0
+    # else:
+    #     cursor.execute("INSERT INTO users (username, password_hash, vidcount, shortcount, subs, views, lastupdatetime) VALUES (?, ?, ?, ?, ?, ?, ?)",(username, password_hash, 0, 0, 0, 0, time.time()))
+    #     conn.commit()
+    #     issuccess = 1
     return issuccess
-def data():
+'''def data():
     import sqlite3
     conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ?", ('idk',))
     user_data = cursor.fetchone() # Fetch a single row
     if user_data:
-        print(f"User found: {user_data}")
+        print(f"User found: {user_data}")'''
 def login(event):
+    from pyscript import document
     import sqlite3
     conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
     cursor = conn.cursor()
@@ -73,6 +103,7 @@ def getalluser():
         print('ID:', countid, ',', row) # Or perform other operations with each row
         countid += 1
 def upload(event):
+    from pyscript import document
     import random
     import time
     Useridlogedin = 1 # this is a test
@@ -99,6 +130,7 @@ def upload(event):
     print('Upload Success')
     return 
 def getallvid(event):
+    from pyscript import document
     import sqlite3
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
