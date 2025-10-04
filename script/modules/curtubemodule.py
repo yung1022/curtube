@@ -1,66 +1,43 @@
+API_BASE = "https://didactic-space-sniffle-w4jp57gvgvv2vgw5-5000.preview.app.github.dev"
+# 讓 Python 可以顯示訊息到 <div id="text"></div>
+from pyscript import document
+
+def show_message(msg):
+    text_div = document.getElementById("text")
+    text_div.innerText = msg
 import time
 import random
-# from pyscript import document
-print('CurTube v1.1')
-def signin(event):
-    issuccess = 0
-    from pyscript import document
-    import pickle
-    Username = document.querySelector("#loginusername")
-    Password = document.querySelector("#loginpassword")
-    file_name = "user_data.pkl"
-    with open(file_name, "rb") as file:
-        # Use pickle.load() to read the list from the file
-        userdata = pickle.load(file)
-    # list format : [[userid(item 1 (or [0])), username, password, vidcount, shortcount, subs, views, lastupdatetime][...]...]
-    # -- PROGRAM TO MAKE USERNAME LIST --
-    usernamelist = []
-    print((len(userdata))/8)
-    for i in range(int((len(userdata)-7)/8)):
-        usernamelist.append(userdata[i*8-7])
-        print(usernamelist)
-    if Username in usernamelist:
-        print(f"User already exists.")
-        issuccess = 0
-    else:
-        print(userdata)
-        newuserid = int(userdata[len(userdata)-8]+1)
-        print(newuserid)
-        newuserdatalist = [newuserid, Username, Password, 0, 0, 0, 0, int(time.time())]
-        userdata.extend(newuserdatalist)
-        file_name = 'user_data.pkl'
-        with open(file_name, 'wb') as file:
-            pickle.dump(userdata, file)
-        issuccess = 1
-    # OLD SCRIPT #
-    # import sqlite3
-    # conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
-    # cursor = conn.cursor()
-    # cursor.execute('''
-    # CREATE TABLE IF NOT EXISTS users (
-    #     id INTEGER PRIMARY KEY,
-    #     username TEXT NOT NULL UNIQUE,
-    #     password_hash TEXT NOT NULL,
-    #     vidcount INTEGER NOT NULL,
-    #     shortcount INTEGER NOT NULL,
-    #     subs INTEGER NOT NULL,
-    #     views INTEGER NOT NULL,
-    #     lastupdatetime INTEGER NOT NULL
-    #     )
+import asyncio
+import json
+
+from js import document
+import js
+import asyncio
+import json
+
     # ''')
     # conn.commit() # Save changes
     # username = Username
+
+# 註冊帳號，呼叫 Flask API
+def signin(event):
+    Username = document.querySelector("#loginusername").value
+    Password = document.querySelector("#loginpassword").value
+    async def register():
+        headers = js.eval('({"Content-Type": "application/json"})')
+        resp = await js.fetch(
+            f"{API_BASE}/api/register",
+            method="POST",
+            headers=headers,
+            body=json.dumps({"username": Username, "password": Password})
+        )
+        if resp.status == 200:
+            show_message("Account created!")
+        else:
+            data = await resp.json()
+            show_message("Register failed: " + str(data.get("error")))
+    asyncio.ensure_future(register())
     # password_hash = Password # Store hashed passwords, not plain text!
-    # cursor.execute("SELECT * FROM users WHERE username = ?", (Username,))
-    # user_data = cursor.fetchone() # Fetch a single row
-    # if user_data:
-    #     print(f"User already exists.")
-    #     issuccess = 0
-    # else:
-    #     cursor.execute("INSERT INTO users (username, password_hash, vidcount, shortcount, subs, views, lastupdatetime) VALUES (?, ?, ?, ?, ?, ?, ?)",(username, password_hash, 0, 0, 0, 0, time.time()))
-    #     conn.commit()
-    #     issuccess = 1
-    return issuccess
 '''def data():
     import sqlite3
     conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
@@ -70,28 +47,22 @@ def signin(event):
     if user_data:
         print(f"User found: {user_data}")'''
 def login(event):
-    from pyscript import document
-    import sqlite3
-    conn = sqlite3.connect('user_data.db') # Creates or connects to a database file
-    cursor = conn.cursor()
-    Username = document.querySelector("#loginusername")
-    Password = document.querySelector("#loginpassword")
-    cursor.execute("SELECT * FROM users WHERE username = ?", (Username,))
-    user_data = cursor.fetchone() # Fetch a single row
-    if user_data:
-        print(f"User found: {user_data[1]}")
-        print('Logging in...')
-        if user_data[2] == Password:
-            global Useridlogedin
-            Useridlogedin = user_data[0]
-            print('Log in success, userid:', Useridlogedin)
-            return Useridlogedin
+    Username = document.querySelector("#loginusername").value
+    Password = document.querySelector("#loginpassword").value
+    async def do_login():
+        headers = js.eval('({"Content-Type": "application/json"})')
+        resp = await js.fetch(
+            f"{API_BASE}/api/login",
+            method="POST",
+            headers=headers,
+            body=json.dumps({"username": Username, "password": Password})
+        )
+        if resp.status == 200:
+            show_message("Login success!")
         else:
-            print('Log in failed, incorrect password')
-            return 'error'
-    else:
-        print('User not found')
-        return 'error'
+            data = await resp.json()
+            show_message("Login failed: " + str(data.get("error")))
+    asyncio.ensure_future(do_login())
 def getalluser():
     import sqlite3
     conn = sqlite3.connect('user_data.db')
